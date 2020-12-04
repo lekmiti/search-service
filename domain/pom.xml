@@ -11,5 +11,13 @@
 
     <artifactId>domain</artifactId>
 
+    <dependencies>
+
+    </dependencies>
+
+    <build>
+        
+    </build>
+
 
 </project>
