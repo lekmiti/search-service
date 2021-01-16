@@ -13,7 +13,14 @@ interface CandidateRepository : ElasticsearchRepository<EsCandidate, String> {
 
 
     @Query("""
-        {"match": {"cv.content": "?0"}}
+       {
+    "match": {
+      "cv.content":{
+      	"query": "?0",
+        "fuzziness": "AUTO"
+      }
+    }
+}
     """)
     fun searchInCvs(phrase: Phrase, pageable: Pageable): Page<EsCandidate>?
 }
