@@ -17,7 +17,6 @@ data class Item<out T>(
         val item: T,
         val itemMetaData: ItemMetaData) where T : AnItem
 
-typealias Items<T> = Collection<Item<T>>
 
 data class Pagination(
         val size: Int,
@@ -38,3 +37,5 @@ data class Links(
         val self: String,
         val first: String,
         val last: String)
+
+
