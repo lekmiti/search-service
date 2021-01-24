@@ -19,7 +19,7 @@ class CandidateResource(private val searchAppService: SearchAppService) {
             @RequestParam("term") term: String,
             @RequestParam("type", required = false) type: String?,
             pageable: Pageable) =
-            searchAppService.search(RequestModel(term, pageable)).let {
+            searchAppService.searchForCandidates(RequestModel(term, pageable)).let {
                 if (it.items.isEmpty()) ResponseEntity.notFound().build()
                 else ResponseEntity.ok(it)
             }

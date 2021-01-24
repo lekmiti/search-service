@@ -5,5 +5,5 @@ import com.lekmiti.searchservice.domain.SearchService
 
 class SearchAppService(private val searchService: SearchService) {
 
-    fun search(requestModel: RequestModel) = searchService.search(requestModel)
+    fun searchForCandidates(requestModel: RequestModel) = searchService.searchForCandidates(requestModel)
 }

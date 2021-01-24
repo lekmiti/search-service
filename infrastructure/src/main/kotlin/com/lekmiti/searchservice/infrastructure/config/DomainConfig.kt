@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate
 
 @Configuration
-class DomainConfig() {
+class DomainConfig {
 
     @Bean
     fun searchAppService(searchService: SearchService) = SearchAppService(searchService)

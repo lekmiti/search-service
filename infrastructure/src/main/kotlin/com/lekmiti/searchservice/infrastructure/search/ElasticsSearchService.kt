@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service
 class ElasticsSearchService(private val elasticsearchRestTemplate: ElasticsearchRestTemplate) : SearchService {
 
 
-    override fun search(requestModel: RequestModel): ResponseModel<Candidate> {
+    override fun searchForCandidates(requestModel: RequestModel): ResponseModel<Candidate> {
         val (term, pageable) = requestModel
         val query = matchQuery("cv.content", term)
                 .fuzziness(Fuzziness.AUTO)
@@ -30,7 +30,6 @@ class ElasticsSearchService(private val elasticsearchRestTemplate: Elasticsearch
         val searchResult = elasticsearchRestTemplate.search(searchQuery, EsCandidate::class.java)
 
         val items = searchResult.searchHits.map { it.toItem() }
-
 
         val pageImpl = PageImpl(items, pageable, searchResult.totalHits)
 
