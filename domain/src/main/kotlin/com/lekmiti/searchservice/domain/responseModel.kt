@@ -8,7 +8,6 @@ data class ResponseModel<out T>(
         val items: Items<T> = emptyList(),
         val pagination: Pagination) where T : AnItem
 
-
 data class ItemMetaData(val score: BigDecimal, val highlight: Collection<String>)
 
 interface AnItem
