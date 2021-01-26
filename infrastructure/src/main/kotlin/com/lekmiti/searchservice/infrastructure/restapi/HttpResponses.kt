@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException
 
 class HttpResponses(private val log: Logger) {
 
-    fun <T> ok(logMessage: String? = null, body: T): ResponseEntity<T> {
+    fun <T> ok(body: T, logMessage: String? = null): ResponseEntity<T> {
         logMessage?.let { log.info(logMessage) }
         return ResponseEntity.ok(body)
     }

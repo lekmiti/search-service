@@ -23,7 +23,7 @@ class SearchResource(private val searchAppService: SearchAppService) {
             pageable: Pageable) =
             searchAppService.searchForCandidates(RequestModel(term, pageable)).let {
                 if (it.items.isEmpty()) response.notFound("No items referenced by term: $term")
-                else response.ok("Items referenced by term '$term': ${it.items}", it)
+                else response.ok(it, "Items referenced by term '$term': ${it.items}")
             }
 
 }
