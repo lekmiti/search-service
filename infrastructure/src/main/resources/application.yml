@@ -1,1 +1,28 @@
+spring:
 
+  application:
+    name: hm-search-service
+
+  cloud:
+    stream:
+      bindings:
+        candidate-created:
+          destination: live.hiring-master
+          group: search-service-candidate-created
+          name:
+        candidate-updated:
+          destination: live.hiring-master
+          group: search-service-candidate-updated
+      rabbit:
+        bindings:
+          candidate-created:
+            consumer:
+              bindingRoutingKey: candidate-created
+              autoBindDlq: true
+          candidate-updated:
+            consumer:
+              bindingRoutingKey: candidate-updated
+              autoBindDlq: true
+
+  rabbitmq:
+    addresses: amqps://ljugmhry:4eLoNvWxjeNf80-YgfBBvwN1XcaUZ4Pk@rattlesnake.rmq.cloudamqp.com/ljugmhry
