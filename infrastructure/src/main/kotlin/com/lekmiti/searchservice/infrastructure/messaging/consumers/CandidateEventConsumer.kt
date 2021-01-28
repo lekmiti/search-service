@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 
-private val log = LoggerFactory.getLogger(CandidateCreatedEventConsumer::class.java)
+private val log = LoggerFactory.getLogger(CandidateEventConsumer::class.java)
 
 @Component
 @Transactional
-class CandidateCreatedEventConsumer {
+class CandidateEventConsumer {
 
     @StreamListener("candidate-created")
     fun onCandidateCreated(@Payload payload: Event<CandidatePayload>) {
