@@ -2,6 +2,7 @@ package com.lekmiti.searchservice.infrastructure.messaging
 
 import com.lekmiti.searchservice.domain.CandidateCode
 import com.lekmiti.searchservice.domain.Cv
+import com.lekmiti.searchservice.domain.SocialNetworks
 import java.time.LocalDateTime
 import java.util.*
 
@@ -12,16 +13,18 @@ data class Event<T>(
 )
 
 data class EventMetaData(
-        val eventID: UUID? = null,
-        val eventType: String? = "unknown-type",
-        val eventDate: LocalDateTime? = null,
-        val source: String? = "unknown-source",
-        val user: String? = "unknown-user")
+        val eventID: UUID?,
+        val eventType: String?,
+        val eventDate: LocalDateTime?,
+        val source: String?,
+        val user: String?)
 
 
 data class CandidatePayload(
-        val candidateNbr: CandidateCode,
-        val firstName: String? = null,
-        val lastName: String? = null,
-        val email: String? = null,
-        val cv: Cv? = null)
+        val candidateCode: CandidateCode,
+        val firstName: String?,
+        val phoneNumber: String?,
+        val socialNetworks: SocialNetworks,
+        val lastName: String?,
+        val email: String?,
+        val cv: Cv?)
