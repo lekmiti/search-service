@@ -1,6 +1,5 @@
-package com.lekmiti.searchservice.infrastructure.messaging.consumers
+package com.lekmiti.searchservice.infrastructure.messaging.candidates
 
-import com.lekmiti.searchservice.infrastructure.messaging.CandidatePayload
 import com.lekmiti.searchservice.infrastructure.messaging.Event
 import org.slf4j.LoggerFactory
 import org.springframework.cloud.stream.annotation.StreamListener

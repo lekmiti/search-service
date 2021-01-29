@@ -8,6 +8,8 @@ typealias SocialNetworks = Collection<SocialNetwork>
 
 typealias Tags = Collection<String>
 
+typealias Attachments = Collection<Attachment>
+
 typealias Items<T> = Collection<Item<T>>
 
 

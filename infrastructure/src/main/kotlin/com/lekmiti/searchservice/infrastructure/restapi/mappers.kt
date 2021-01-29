@@ -8,13 +8,6 @@ import org.springframework.data.elasticsearch.core.SearchHit
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 
-fun constructPageUri(page: Int): String {
-    return ServletUriComponentsBuilder.fromCurrentRequest()
-            .replaceQueryParam("page", page)
-            .build()
-            .encode()
-            .toUriString()
-}
 
 fun <T> PageImpl<T>.toPagination(totalItems: Int) = Pagination(
         size = size,
@@ -37,3 +30,11 @@ fun <T> PageImpl<T>.toPagination(totalItems: Int) = Pagination(
 fun <T> SearchHit<T>.toItemMetaData() = ItemMetaData(
         score = score.toBigDecimal(),
         highlight = highlightFields.values.flatten().toList())
+
+fun constructPageUri(page: Int): String {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+                .replaceQueryParam("page", page)
+                .build()
+                .encode()
+                .toUriString()
+}

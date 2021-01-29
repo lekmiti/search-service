@@ -46,7 +46,7 @@ fun SearchHit<EsCandidate>.toCandidate() = Candidate(
         lastName = content.lastName,
         cv = content.cv,
         email = content.email,
-        condidateNbr = content.condidateNbr)
+        candidateCode = content.candidateCode)
 
 fun SearchHit<EsCandidate>.toItem() = Item(item = toCandidate(), itemMetaData = toItemMetaData())
 
