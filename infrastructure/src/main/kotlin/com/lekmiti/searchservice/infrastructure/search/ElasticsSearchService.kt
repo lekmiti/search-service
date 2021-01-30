@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class ElasticsSearchService(private val elasticsearchRestTemplate: ElasticsearchRestTemplate) : SearchService {
+class ElasticsSearchService(private val elasticsearchRestTemplate: ElasticsearchRestTemplate) : CandidateService {
 
 
     override fun searchForCandidates(requestModel: RequestModel): ResponseModel<Candidate> {

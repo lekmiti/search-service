@@ -1,7 +1,6 @@
 package com.lekmiti.searchservice.domain
 
 
-interface SearchService {
-
+interface CandidateService {
     fun searchForCandidates(requestModel: RequestModel): ResponseModel<Candidate>
 }
