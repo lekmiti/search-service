@@ -1,5 +1,6 @@
 package com.lekmiti.searchservice.infrastructure.messaging.candidates
 
+import com.lekmiti.searchservice.application.CandidateAppService
 import com.lekmiti.searchservice.infrastructure.messaging.Event
 import org.slf4j.LoggerFactory
 import org.springframework.cloud.stream.annotation.StreamListener
@@ -12,15 +13,18 @@ private val log = LoggerFactory.getLogger(CandidateEventConsumer::class.java)
 
 @Component
 @Transactional
-class CandidateEventConsumer {
+class CandidateEventConsumer(private val candidateAppService: CandidateAppService) {
 
     @StreamListener("candidate-created")
-    fun onCandidateCreated(@Payload payload: Event<CandidatePayload>) {
-        log.info("new candidate created event received $payload")
+    fun onCandidateCreated(@Payload candidateCreatedEvent: Event<CandidatePayload>) {
+        log.info("candidate-created event received $candidateCreatedEvent")
+        candidateAppService.saveOrUpdateCandidate(candidateCreatedEvent.payload)
     }
 
     @StreamListener("candidate-updated")
-    fun onCandidateUpdated(@Payload payload: Event<CandidatePayload>) {
-        log.info("new candidate created event received $payload")
+    fun onCandidateUpdated(@Payload candidateUpdatedEvent: Event<CandidatePayload>) {
+        log.info("candidate-updated event received $candidateUpdatedEvent")
+        candidateAppService.saveOrUpdateCandidate(candidateUpdatedEvent.payload)
+
     }
 }
