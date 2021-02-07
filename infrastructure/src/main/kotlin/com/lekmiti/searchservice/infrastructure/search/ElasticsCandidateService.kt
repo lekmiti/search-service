@@ -69,13 +69,13 @@ class ElasticsCandidateService(
 }
 
 fun Candidate.toEsCandidate() = EsCandidate(
-    candidateCode, firstName, lastName, email, phoneNumber, socialNetworks, tags, country, otherAttachments, cv
+    candidateCode, firstName, lastName, email, phoneNumber, socialNetworks, tags, country, otherAttachments, cvList
 )
 
 fun SearchHit<EsCandidate>.toCandidate() = Candidate(
     firstName = content.firstName,
     lastName = content.lastName,
-    cv = content.cv,
+    cvList = content.cvList,
     email = content.email,
     candidateCode = content.candidateCode,
     phoneNumber = content.phoneNumber,

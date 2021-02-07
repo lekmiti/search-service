@@ -18,13 +18,13 @@ class SearchResource(private val searchAppService: SearchAppService) {
 
     @GetMapping
     fun search(
-            @RequestParam("term") term: String,
-            @RequestParam("type", required = false) type: String?,
-            pageable: Pageable) =
-            searchAppService.searchForCandidates(RequestModel(term, pageable)).let {
-                if (it.items.isEmpty()) response.notFound("No items referenced by term: $term")
-                else response.ok(it, "Items referenced by term '$term': ${it.items}")
-            }
+        @RequestParam("term") term: String,
+        @RequestParam("type", required = false) type: String?,
+        pageable: Pageable) =
+        searchAppService.searchForCandidates(RequestModel(term, pageable)).let {
+            if (it.items.isEmpty()) response.notFound("No items referenced by term: $term")
+            else response.ok(it, "Items referenced by term '$term': ${it.items}")
+        }
 
 }
 

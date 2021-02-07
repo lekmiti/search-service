@@ -1,6 +1,5 @@
 package com.lekmiti.searchservice.infrastructure.search
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.lekmiti.searchservice.domain.*
 import org.springframework.data.annotation.Id
 import org.springframework.data.elasticsearch.annotations.Document
@@ -19,6 +18,6 @@ class EsCandidate(
         country: String?,
         otherAttachments: Attachments,
         @Field(type = FieldType.Nested, includeInParent = true)
-        override val cv: Cv?,
+        override val cvList: CVs,
         @Id val id: String? = null)
-    : Candidate(candidateCode, firstName, lastName, email, phoneNumber, socialNetworks, tags, country, otherAttachments, cv)
+    : Candidate(candidateCode, firstName, lastName, email, phoneNumber, socialNetworks, tags, country, otherAttachments, cvList)

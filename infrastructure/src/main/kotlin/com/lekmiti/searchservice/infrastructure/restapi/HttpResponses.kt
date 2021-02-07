@@ -19,9 +19,7 @@ class HttpResponses(private val log: Logger) {
         throwResponseStatusException(NOT_FOUND, leak, logMessage)
     }
 
-
-    private
-    fun throwResponseStatusException(status: HttpStatus, leak: Boolean = false, message: String?): Nothing {
+    private fun throwResponseStatusException(status: HttpStatus, leak: Boolean = false, message: String?): Nothing {
         throw ResponseStatusException(status, if (leak) message else null)
     }
 }

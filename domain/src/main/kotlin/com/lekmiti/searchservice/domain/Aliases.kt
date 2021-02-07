@@ -10,7 +10,9 @@ typealias Tags = Collection<String>
 
 typealias Emails = Collection<String>
 
-typealias Attachments = Collection<Attachment>
+typealias Attachments= Collection<Attachment>
+
+typealias CVs = Collection<Attachment>
 
 typealias Items<T> = Collection<Item<T>>
 
