@@ -3,6 +3,7 @@ package com.lekmiti.searchservice.infrastructure.search
 import com.google.gson.Gson
 import com.lekmiti.searchservice.domain.*
 import com.lekmiti.searchservice.infrastructure.persistence.ElasticsearchCandidateRepository
+import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.index.query.QueryBuilders.matchQuery
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder
@@ -14,10 +15,14 @@ import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder
 import org.springframework.data.elasticsearch.core.query.UpdateQuery
 import org.springframework.stereotype.Service
+import org.elasticsearch.action.update.UpdateRequest
+import org.elasticsearch.common.xcontent.XContentType
+import java.util.HashMap
+import org.elasticsearch.client.RequestOptions
 
 
 @Service
-class ElasticsCandidateService(
+class ElasticCandidateService(
     private val elasticsearchRestTemplate: ElasticsearchRestTemplate,
     private val elasticsearchCandidateRepository: ElasticsearchCandidateRepository,
     private val gson: Gson
@@ -57,28 +62,40 @@ class ElasticsCandidateService(
 
 
     override fun updateCandidate(candidate: Candidate) =
-        elasticsearchCandidateRepository.findByCandidateCode(candidate.candidateCode) // this extra find is to get the doc id from
-            ?.let {
-                val updateQuery = UpdateQuery.builder(it.id!!)
-                                    .withDocAsUpsert(true)
-                                    .withUpsert(Document.parse(gson.toJson(candidate)))
-                                    .build()
+        elasticsearchCandidateRepository.findByCandidateCode(candidate.candidateCode)
+            .let {
+                val updateQuery = UpdateQuery.builder(it!!.id!!)
+                    .withDocument(Document.parse(gson.toJson(candidate)))
+                    .build()
                 elasticsearchRestTemplate.update(updateQuery, IndexCoordinates.of("candidates"))
-                return@let candidate}
-            ?: saveCandidate(candidate)
+                return@let candidate
+            }
+
 }
 
 fun Candidate.toEsCandidate() = EsCandidate(
-    candidateCode, firstName, lastName, email, phoneNumber, socialNetworks, tags, country, otherAttachments, cvList
+    candidateCode = candidateCode,
+    firstName = firstName,
+    lastName = lastName,
+    emails = emails,
+    phoneNumbers = phoneNumbers,
+    socialNetworks = socialNetworks,
+    tags = tags,
+    country = country,
+    address = address,
+    applicationType = applicationType,
+    source = source,
+    otherAttachments = otherAttachments,
+    cvList = cvList
 )
 
 fun SearchHit<EsCandidate>.toCandidate() = Candidate(
     firstName = content.firstName,
     lastName = content.lastName,
     cvList = content.cvList,
-    email = content.email,
+    emails = content.emails,
     candidateCode = content.candidateCode,
-    phoneNumber = content.phoneNumber,
+    phoneNumbers = content.phoneNumbers,
     socialNetworks = content.socialNetworks,
     tags = content.tags,
     country = content.country,
@@ -86,5 +103,4 @@ fun SearchHit<EsCandidate>.toCandidate() = Candidate(
 )
 
 fun SearchHit<EsCandidate>.toItem() = Item(item = toCandidate(), itemMetaData = toItemMetaData())
-
 

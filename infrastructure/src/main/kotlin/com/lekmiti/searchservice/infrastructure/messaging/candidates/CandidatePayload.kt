@@ -7,21 +7,28 @@ class CandidatePayload(
         candidateCode: CandidateCode,
         firstName: String?,
         lastName: String?,
-        email: Emails?,
-        phoneNumber: Collection<String>?,
+        emails: Emails?,
+        phoneNumbers: Collection<String>?,
         socialNetworks: SocialNetworks?,
         tags: Tags?,
         country: String?,
-        otherAttachments: Attachments? = emptyList(),
-        cvList: CVs? = emptyList()
+        address: String?,
+        applicationType: String?,
+        source: String?,
+        otherAttachments: Attachments?,
+        cvList: CVs?
 ) : Candidate(
         candidateCode,
         firstName,
         lastName,
-        email.orEmpty(),
-        phoneNumber.orEmpty(),
+        emails.orEmpty(),
+        phoneNumbers.orEmpty(),
         socialNetworks.orEmpty(),
         tags.orEmpty(),
         country,
+        address,
+        applicationType,
+        source,
         otherAttachments.orEmpty(),
-        cvList.orEmpty())
+        cvList.orEmpty()
+)

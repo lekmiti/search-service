@@ -3,6 +3,8 @@ package com.lekmiti.searchservice.domain
 import org.springframework.data.domain.Sort
 import java.math.BigDecimal
 
+typealias Items<T> = Collection<Item<T>>
+
 data class ResponseModel<out T>(
         val type: String,
         val items: Items<T> = emptyList(),

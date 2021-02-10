@@ -3,10 +3,8 @@ package com.lekmiti.searchservice.infrastructure.config
 import com.lekmiti.searchservice.application.CandidateAppService
 import com.lekmiti.searchservice.application.SearchAppService
 import com.lekmiti.searchservice.domain.CandidateService
-import com.lekmiti.searchservice.infrastructure.search.ElasticsCandidateService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate
 
 @Configuration
 class DomainConfig {
@@ -16,4 +14,6 @@ class DomainConfig {
 
     @Bean
     fun candidateAppService(candidateService: CandidateService) = CandidateAppService(candidateService)
+
+
 }
