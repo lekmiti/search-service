@@ -11,4 +11,5 @@ interface CandidateService {
 
     fun findCandidateByCode(candidateCode: CandidateCode) : Candidate?
 
+    fun deleteCandidate(candidateCode: CandidateCode)
 }

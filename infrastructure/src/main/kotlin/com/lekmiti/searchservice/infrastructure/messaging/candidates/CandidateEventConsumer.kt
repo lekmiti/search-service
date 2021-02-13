@@ -16,15 +16,22 @@ private val log = LoggerFactory.getLogger(CandidateEventConsumer::class.java)
 class CandidateEventConsumer(private val candidateAppService: CandidateAppService) {
 
     @StreamListener("candidate-created")
-    fun onCandidateCreated(@Payload candidateCreatedEvent: Event<CandidatePayload>) {
+   fun onCandidateCreated(@Payload candidateCreatedEvent: Event<CandidatePayload>) {
         log.info("candidate-created event received $candidateCreatedEvent")
-        candidateAppService.saveOrUpdateCandidate(candidateCreatedEvent.payload)
+        candidateAppService.saveOrUpdateCandidate(candidateCreatedEvent.payload.toCandidateUpsert())
     }
 
     @StreamListener("candidate-updated")
     fun onCandidateUpdated(@Payload candidateUpdatedEvent: Event<CandidatePayload>) {
         log.info("candidate-updated event received $candidateUpdatedEvent")
-        candidateAppService.saveOrUpdateCandidate(candidateUpdatedEvent.payload)
+        candidateAppService.saveOrUpdateCandidate(candidateUpdatedEvent.payload.toCandidateUpsert())
+    }
 
+    @StreamListener("candidate-data-deleted")
+    fun onCandidateDataDeleted(@Payload candidateDataDeletedEvent: Event<CandidatePayload>) {
+        log.info("candidate-data-deleted event received $candidateDataDeletedEvent")
+        val candidateDelete =
+            candidateDataDeletedEvent.payload.toCandidateDelete(candidateDataDeletedEvent.metaData.eventType)
+        candidateAppService.deleteCandidateData(candidateDelete)
     }
 }

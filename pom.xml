@@ -33,7 +33,7 @@
         <gson>2.8.6</gson>
         <slf4j.version>1.7.30</slf4j.version>
         <spring.cloud-version>2020.0.0</spring.cloud-version>
-
+        <jackson.version>2.12.1</jackson.version>
     </properties>
 
     <dependencyManagement>
@@ -79,7 +79,11 @@
                 <artifactId>gson</artifactId>
                 <version>${gson}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-kotlin</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

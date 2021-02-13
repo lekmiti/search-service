@@ -35,7 +35,39 @@ open class Candidate(
                     socialNetworks = if (it.socialNetworks.isNullOrEmpty()) this.socialNetworks else it.socialNetworks
                 )
             } ?: this
+
+    fun deleteCandidateData(candidateDataToBeDeleted: CandidateDataToBeDeleted) =
+        Candidate(
+            candidateCode = candidateCode,
+            firstName = firstName,
+            lastName = lastName,
+            country = country,
+            source = source,
+            address = address,
+            applicationType = applicationType,
+            phoneNumbers = phoneNumbers - candidateDataToBeDeleted.phoneNumbers,
+            emails = emails - candidateDataToBeDeleted.emails,
+            tags = tags - candidateDataToBeDeleted.tags,
+            cvList = cvList - candidateDataToBeDeleted.cvList,
+            otherAttachments = otherAttachments - candidateDataToBeDeleted.otherAttachments,
+            socialNetworks = socialNetworks - candidateDataToBeDeleted.socialNetworks
+        )
 }
+
+
+data class CandidateDelete(
+    val candidateCode: CandidateCode,
+    val deletionPolicy: String,
+    val candidateDataToBeDeleted: CandidateDataToBeDeleted)
+
+
+data class CandidateDataToBeDeleted(
+    val emails: Emails = emptyList(),
+    val phoneNumbers: Collection<String> = emptyList(),
+    val socialNetworks: SocialNetworks = emptyList(),
+    val tags: Tags = emptyList(),
+    val otherAttachments: Attachments = emptyList(),
+    val cvList: CVs = emptyList())
 
 
 

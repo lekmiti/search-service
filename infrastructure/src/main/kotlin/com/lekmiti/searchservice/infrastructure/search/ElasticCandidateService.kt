@@ -3,7 +3,6 @@ package com.lekmiti.searchservice.infrastructure.search
 import com.google.gson.Gson
 import com.lekmiti.searchservice.domain.*
 import com.lekmiti.searchservice.infrastructure.persistence.ElasticsearchCandidateRepository
-import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.index.query.QueryBuilders.matchQuery
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder
@@ -15,10 +14,6 @@ import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder
 import org.springframework.data.elasticsearch.core.query.UpdateQuery
 import org.springframework.stereotype.Service
-import org.elasticsearch.action.update.UpdateRequest
-import org.elasticsearch.common.xcontent.XContentType
-import java.util.HashMap
-import org.elasticsearch.client.RequestOptions
 
 
 @Service
@@ -57,6 +52,7 @@ class ElasticCandidateService(
         elasticsearchCandidateRepository.findByCandidateCode(candidateCode)
 
 
+
     override fun saveCandidate(candidate: Candidate) =
         elasticsearchCandidateRepository.save(candidate.toEsCandidate())
 
@@ -70,6 +66,9 @@ class ElasticCandidateService(
                 elasticsearchRestTemplate.update(updateQuery, IndexCoordinates.of("candidates"))
                 return@let candidate
             }
+
+    override fun deleteCandidate(candidateCode: CandidateCode) =
+        elasticsearchCandidateRepository.deleteByCandidateCode(candidateCode)
 
 }
 

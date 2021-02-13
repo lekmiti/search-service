@@ -9,10 +9,12 @@ spring:
         candidate-created:
           destination: live.hiring-master
           group: search-service-candidate-created
-          name:
         candidate-updated:
           destination: live.hiring-master
           group: search-service-candidate-updated
+        candidate-data-deleted:
+          destination: live.hiring-master
+          group: search-service-candidate-data-deleted
       rabbit:
         bindings:
           candidate-created:
@@ -22,6 +24,10 @@ spring:
           candidate-updated:
             consumer:
               bindingRoutingKey: candidate-updated
+              autoBindDlq: true
+          candidate-data-deleted:
+            consumer:
+              bindingRoutingKey: candidate-data-deleted
               autoBindDlq: true
 
   rabbitmq:

@@ -6,4 +6,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 interface ElasticsearchCandidateRepository : ElasticsearchRepository<EsCandidate, String> {
     fun findByCandidateCode(candidateCode: CandidateCode): EsCandidate?
+    fun deleteByCandidateCode(candidateCode: CandidateCode)
 }
