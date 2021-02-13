@@ -1,6 +1,9 @@
 package com.lekmiti.searchservice.infrastructure.search
 
 import com.lekmiti.searchservice.domain.*
+import com.lekmiti.searchservice.domain.candidate.Attachments
+import com.lekmiti.searchservice.domain.candidate.CVs
+import com.lekmiti.searchservice.domain.candidate.Candidate
 import org.springframework.data.annotation.Id
 import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Field

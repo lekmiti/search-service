@@ -1,4 +1,6 @@
-package com.lekmiti.searchservice.domain
+package com.lekmiti.searchservice.domain.candidate
+
+import com.lekmiti.searchservice.domain.Tags
 
 
 typealias Attachments= Collection<Attachment>

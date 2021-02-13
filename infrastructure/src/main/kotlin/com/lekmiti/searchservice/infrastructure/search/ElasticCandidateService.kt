@@ -2,6 +2,8 @@ package com.lekmiti.searchservice.infrastructure.search
 
 import com.google.gson.Gson
 import com.lekmiti.searchservice.domain.*
+import com.lekmiti.searchservice.domain.candidate.Candidate
+import com.lekmiti.searchservice.domain.candidate.CandidateService
 import com.lekmiti.searchservice.infrastructure.persistence.ElasticsearchCandidateRepository
 import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.index.query.QueryBuilders.matchQuery

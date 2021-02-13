@@ -1,5 +1,7 @@
 package com.lekmiti.searchservice.domain
 
+import com.lekmiti.searchservice.domain.candidate.SocialNetwork
+
 typealias CandidateCode = String
 
 typealias Term = String

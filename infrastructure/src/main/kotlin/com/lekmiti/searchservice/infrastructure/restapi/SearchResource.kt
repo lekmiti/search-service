@@ -1,6 +1,6 @@
 package com.lekmiti.searchservice.infrastructure.restapi
 
-import com.lekmiti.searchservice.application.SearchAppService
+import com.lekmiti.searchservice.usecases.SearchUseCases
 import com.lekmiti.searchservice.domain.RequestModel
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
@@ -14,14 +14,14 @@ private val response = HttpResponses(log)
 
 @RestController
 @RequestMapping("/api/v1/candidates")
-class SearchResource(private val searchAppService: SearchAppService) {
+class SearchResource(private val searchUseCases: SearchUseCases) {
 
     @GetMapping
     fun search(
         @RequestParam("term") term: String,
         @RequestParam("type", required = false) type: String?,
         pageable: Pageable) =
-        searchAppService.searchForCandidates(RequestModel(term, pageable)).let {
+        searchUseCases.searchForCandidates(RequestModel(term, pageable)).let {
             if (it.items.isEmpty()) response.notFound("No items referenced by term: $term")
             else response.ok(it, "Items referenced by term '$term': ${it.items}")
         }

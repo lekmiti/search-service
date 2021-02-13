@@ -2,6 +2,7 @@ package com.lekmiti.searchservice.infrastructure.messaging.candidates
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.lekmiti.searchservice.domain.*
+import com.lekmiti.searchservice.domain.candidate.*
 
 
 data class CandidatePayload(

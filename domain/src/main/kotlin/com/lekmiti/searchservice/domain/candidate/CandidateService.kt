@@ -1,4 +1,8 @@
-package com.lekmiti.searchservice.domain
+package com.lekmiti.searchservice.domain.candidate
+
+import com.lekmiti.searchservice.domain.CandidateCode
+import com.lekmiti.searchservice.domain.RequestModel
+import com.lekmiti.searchservice.domain.ResponseModel
 
 
 interface CandidateService {

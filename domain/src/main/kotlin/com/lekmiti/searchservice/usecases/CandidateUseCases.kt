@@ -1,14 +1,14 @@
-package com.lekmiti.searchservice.application
+package com.lekmiti.searchservice.usecases
 
-import com.lekmiti.searchservice.domain.Candidate
-import com.lekmiti.searchservice.domain.CandidateDelete
-import com.lekmiti.searchservice.domain.CandidateService
+import com.lekmiti.searchservice.domain.candidate.Candidate
+import com.lekmiti.searchservice.domain.candidate.CandidateDelete
+import com.lekmiti.searchservice.domain.candidate.CandidateService
 import org.slf4j.LoggerFactory
 
-private val log = LoggerFactory.getLogger(CandidateAppService::class.java)
+private val log = LoggerFactory.getLogger(CandidateUseCases::class.java)
 
 
-class CandidateAppService(private val candidateService: CandidateService) {
+class CandidateUseCases(private val candidateService: CandidateService) {
 
     fun saveOrUpdateCandidate(candidate: Candidate) =
         candidateService.findCandidateByCode(candidate.candidateCode)

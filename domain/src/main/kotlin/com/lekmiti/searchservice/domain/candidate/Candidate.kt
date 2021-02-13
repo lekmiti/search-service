@@ -1,4 +1,6 @@
-package com.lekmiti.searchservice.domain
+package com.lekmiti.searchservice.domain.candidate
+
+import com.lekmiti.searchservice.domain.*
 
 open class Candidate(
     val candidateCode: CandidateCode,
@@ -55,10 +57,13 @@ open class Candidate(
 }
 
 
+data class SocialNetwork(val type: String, val link: String)
+
 data class CandidateDelete(
     val candidateCode: CandidateCode,
     val deletionPolicy: String,
-    val candidateDataToBeDeleted: CandidateDataToBeDeleted)
+    val candidateDataToBeDeleted: CandidateDataToBeDeleted
+)
 
 
 data class CandidateDataToBeDeleted(
