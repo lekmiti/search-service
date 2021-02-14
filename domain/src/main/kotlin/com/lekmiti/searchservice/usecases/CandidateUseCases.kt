@@ -20,7 +20,7 @@ class CandidateUseCases(private val candidateService: CandidateService) {
             ?.let {
                 when (candidate.deletionPolicy) {
                     "full_deletion" -> candidateService.deleteCandidate(candidate.candidateCode, candidate.company)
-                    "partial_deletion" -> candidateService.updateCandidate(it.deleteCandidateData(candidate.candidateDataToBeDeleted), candidate.company)
+                    "partial_deletion" -> candidateService.updateCandidate(it.delete(candidate.candidateDataToBeDeleted), candidate.company)
                     else -> throw IllegalArgumentException("No such deletion policy as '${candidate.deletionPolicy}'")
                 }
             } ?: log.warn("Unable to apply deletion operation: candidate ${candidate.candidateCode} not found!")
