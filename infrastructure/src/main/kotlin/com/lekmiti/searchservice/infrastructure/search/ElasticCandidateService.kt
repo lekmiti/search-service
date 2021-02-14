@@ -1,28 +1,39 @@
 package com.lekmiti.searchservice.infrastructure.search
 
 import com.google.gson.Gson
-import com.lekmiti.searchservice.domain.*
+import com.lekmiti.searchservice.domain.CandidateCode
+import com.lekmiti.searchservice.domain.Item
+import com.lekmiti.searchservice.domain.RequestModel
+import com.lekmiti.searchservice.domain.ResponseModel
 import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.candidate.CandidateService
-import com.lekmiti.searchservice.infrastructure.persistence.ElasticsearchCandidateRepository
+import org.elasticsearch.action.index.IndexRequest
+import org.elasticsearch.action.search.SearchRequest
+import org.elasticsearch.action.search.SearchResponse
+import org.elasticsearch.client.RequestOptions.DEFAULT
+import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.unit.Fuzziness
+import org.elasticsearch.common.xcontent.XContentType.JSON
 import org.elasticsearch.index.query.QueryBuilders.matchQuery
+import org.elasticsearch.index.query.QueryBuilders.termQuery
+import org.elasticsearch.index.query.TermQueryBuilder
+import org.elasticsearch.index.reindex.DeleteByQueryRequest
+import org.elasticsearch.index.reindex.UpdateByQueryRequest
+import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate
 import org.springframework.data.elasticsearch.core.SearchHit
-import org.springframework.data.elasticsearch.core.document.Document
-import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder
-import org.springframework.data.elasticsearch.core.query.UpdateQuery
 import org.springframework.stereotype.Service
+import java.util.*
 
+private val gson = Gson()
 
 @Service
 class ElasticCandidateService(
     private val elasticsearchRestTemplate: ElasticsearchRestTemplate,
-    private val elasticsearchCandidateRepository: ElasticsearchCandidateRepository,
-    private val gson: Gson
+    private val elasticsearchHighLevelClient: RestHighLevelClient
 ) : CandidateService {
 
     override fun searchForCandidates(requestModel: RequestModel): ResponseModel<Candidate> {
@@ -50,48 +61,45 @@ class ElasticCandidateService(
         )
     }
 
-    override fun findCandidateByCode(candidateCode: CandidateCode) =
-        elasticsearchCandidateRepository.findByCandidateCode(candidateCode)
+    override fun findCandidateByCode(candidateCode: CandidateCode, index: String): Candidate? {
+        val sourceBuilder = SearchSourceBuilder().query(termQuery("candidateCode", candidateCode))
+        val searchRequest = SearchRequest().indices(index).source(sourceBuilder)
+        return elasticsearchHighLevelClient
+                .search(searchRequest, DEFAULT)
+                .toCandidate()
+    }
 
+    override fun saveCandidate(candidate: Candidate, index: String): Candidate {
+        val request = IndexRequest(index)
+            .id(UUID.randomUUID().toString())
+            .source(gson.toJson(candidate), JSON)
+        elasticsearchHighLevelClient.index(request, DEFAULT)
+        return candidate
 
+    }
 
-    override fun saveCandidate(candidate: Candidate) =
-        elasticsearchCandidateRepository.save(candidate.toEsCandidate())
+    override fun updateCandidate(candidate: Candidate, index: String): Candidate {
+        val request = UpdateByQueryRequest(index)
+            .setQuery(TermQueryBuilder("candidateCode", candidate.candidateCode))
+        elasticsearchHighLevelClient.updateByQuery(request, DEFAULT)
+        return candidate
+    }
 
-
-    override fun updateCandidate(candidate: Candidate) =
-        elasticsearchCandidateRepository.findByCandidateCode(candidate.candidateCode)
-            .let {
-                val updateQuery = UpdateQuery.builder(it!!.id!!)
-                    .withDocument(Document.parse(gson.toJson(candidate)))
-                    .build()
-                elasticsearchRestTemplate.update(updateQuery, IndexCoordinates.of("candidates"))
-                return@let candidate
-            }
-
-    override fun deleteCandidate(candidateCode: CandidateCode) =
-        elasticsearchCandidateRepository.deleteByCandidateCode(candidateCode)
+    override fun deleteCandidate(candidateCode: CandidateCode, index: String) {
+        val request = DeleteByQueryRequest(index)
+            .setQuery(TermQueryBuilder("candidateCode", candidateCode))
+        elasticsearchHighLevelClient.deleteByQuery(request, DEFAULT)
+    }
 
 }
 
-fun Candidate.toEsCandidate() = EsCandidate(
-    candidateCode = candidateCode,
-    firstName = firstName,
-    lastName = lastName,
-    emails = emails,
-    phoneNumbers = phoneNumbers,
-    socialNetworks = socialNetworks,
-    tags = tags,
-    country = country,
-    address = address,
-    applicationType = applicationType,
-    source = source,
-    otherAttachments = otherAttachments,
-    cvList = cvList
-)
+fun SearchResponse.toCandidate(): Candidate? =
+    hits.hits.firstOrNull()?.sourceAsString.let { gson.fromJson(it, Candidate::class.java) }
+
 
 fun SearchHit<EsCandidate>.toCandidate() = Candidate(
     firstName = content.firstName,
+    company = content.company,
     lastName = content.lastName,
     cvList = content.cvList,
     emails = content.emails,

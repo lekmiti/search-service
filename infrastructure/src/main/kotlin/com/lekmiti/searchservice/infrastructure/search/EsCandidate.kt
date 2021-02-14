@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType
 @Document(indexName = "candidates")
 class EsCandidate(
         candidateCode: CandidateCode,
+        company: Company,
         firstName: String?,
         lastName: String?,
         emails: Emails,
@@ -28,6 +29,7 @@ class EsCandidate(
         @Id val id: String? = null
 ) : Candidate(
         candidateCode,
+        company,
         firstName,
         lastName,
         emails,

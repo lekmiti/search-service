@@ -9,11 +9,11 @@ interface CandidateService {
 
     fun searchForCandidates(requestModel: RequestModel): ResponseModel<Candidate>
 
-    fun saveCandidate(candidate: Candidate): Candidate
+    fun saveCandidate(candidate: Candidate, index: String): Candidate
 
-    fun updateCandidate(candidate: Candidate): Candidate
+    fun updateCandidate(candidate: Candidate, index: String): Candidate
 
-    fun findCandidateByCode(candidateCode: CandidateCode) : Candidate?
+    fun findCandidateByCode(candidateCode: CandidateCode, index: String) : Candidate?
 
-    fun deleteCandidate(candidateCode: CandidateCode)
+    fun deleteCandidate(candidateCode: CandidateCode, index: String)
 }

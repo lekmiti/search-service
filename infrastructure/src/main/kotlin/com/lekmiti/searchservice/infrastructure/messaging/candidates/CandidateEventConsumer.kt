@@ -1,7 +1,7 @@
 package com.lekmiti.searchservice.infrastructure.messaging.candidates
 
-import com.lekmiti.searchservice.usecases.CandidateUseCases
 import com.lekmiti.searchservice.infrastructure.messaging.Event
+import com.lekmiti.searchservice.usecases.CandidateUseCases
 import org.slf4j.LoggerFactory
 import org.springframework.cloud.stream.annotation.StreamListener
 import org.springframework.messaging.handler.annotation.Payload
@@ -18,13 +18,13 @@ class CandidateEventConsumer(private val candidateUseCases: CandidateUseCases) {
     @StreamListener("candidate-created")
    fun onCandidateCreated(@Payload candidateCreatedEvent: Event<CandidatePayload>) {
         log.info("candidate-created event received $candidateCreatedEvent")
-        candidateUseCases.saveOrUpdateCandidate(candidateCreatedEvent.payload.toCandidateUpsert())
+        candidateUseCases.createOrUpdateCandidate(candidateCreatedEvent.payload.toCandidateUpsert())
     }
 
     @StreamListener("candidate-updated")
     fun onCandidateUpdated(@Payload candidateUpdatedEvent: Event<CandidatePayload>) {
         log.info("candidate-updated event received $candidateUpdatedEvent")
-        candidateUseCases.saveOrUpdateCandidate(candidateUpdatedEvent.payload.toCandidateUpsert())
+        candidateUseCases.createOrUpdateCandidate(candidateUpdatedEvent.payload.toCandidateUpsert())
     }
 
     @StreamListener("candidate-data-deleted")

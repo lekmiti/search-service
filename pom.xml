@@ -29,7 +29,7 @@
         <assertj.version>3.18.1</assertj.version>
         <junit>5.4.0</junit>
         <junit.platform.version>1.0.1</junit.platform.version>
-        <mockk>1.10.3</mockk>
+        <mockk>1.10.6</mockk>
         <gson>2.8.6</gson>
         <slf4j.version>1.7.30</slf4j.version>
         <spring.cloud-version>2020.0.0</spring.cloud-version>

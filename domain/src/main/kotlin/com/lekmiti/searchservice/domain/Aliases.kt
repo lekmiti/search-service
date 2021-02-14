@@ -4,6 +4,8 @@ import com.lekmiti.searchservice.domain.candidate.SocialNetwork
 
 typealias CandidateCode = String
 
+typealias Company = String
+
 typealias Term = String
 
 typealias SocialNetworks = Collection<SocialNetwork>

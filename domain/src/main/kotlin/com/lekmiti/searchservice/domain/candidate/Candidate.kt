@@ -4,6 +4,7 @@ import com.lekmiti.searchservice.domain.*
 
 open class Candidate(
     val candidateCode: CandidateCode,
+    val company: Company,
     val firstName: String? = null,
     val lastName: String? = null,
     val emails: Emails = emptyList(),
@@ -23,6 +24,7 @@ open class Candidate(
             ?.let {
                 Candidate(
                     candidateCode = it.candidateCode,
+                    company = it.company,
                     firstName = it.firstName ?: this.firstName,
                     lastName = it.lastName ?: this.lastName,
                     country = it.country ?: this.country,
@@ -41,6 +43,7 @@ open class Candidate(
     fun deleteCandidateData(candidateDataToBeDeleted: CandidateDataToBeDeleted) =
         Candidate(
             candidateCode = candidateCode,
+            company = company,
             firstName = firstName,
             lastName = lastName,
             country = country,
@@ -61,6 +64,7 @@ data class SocialNetwork(val type: String, val link: String)
 
 data class CandidateDelete(
     val candidateCode: CandidateCode,
+    val company: Company,
     val deletionPolicy: String,
     val candidateDataToBeDeleted: CandidateDataToBeDeleted
 )
