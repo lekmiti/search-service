@@ -6,9 +6,9 @@ import java.math.BigDecimal
 typealias Items<T> = Collection<Item<T>>
 
 data class ResponseModel<out T>(
-        val type: String,
+        val scope: String = "all",
         val items: Items<T> = emptyList(),
-        val pagination: Pagination) where T : AnItem
+        val pagination: Pagination? = null) where T : AnItem
 
 data class ItemMetaData(val score: BigDecimal, val highlight: Collection<String>)
 

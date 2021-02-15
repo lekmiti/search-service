@@ -55,7 +55,7 @@ class ElasticCandidateService(
         val pageImpl = PageImpl(items, pageable, searchResult.totalHits)
 
         return ResponseModel(
-            type = "candidates",
+            scope = "candidates",
             items = items,
             pagination = pageImpl.toPagination(searchResult.totalHits.toInt())
         )
