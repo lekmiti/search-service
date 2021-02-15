@@ -1,10 +1,7 @@
 package com.lekmiti.searchservice.infrastructure.search
 
 import com.google.gson.Gson
-import com.lekmiti.searchservice.domain.CandidateCode
-import com.lekmiti.searchservice.domain.Item
-import com.lekmiti.searchservice.domain.RequestModel
-import com.lekmiti.searchservice.domain.ResponseModel
+import com.lekmiti.searchservice.domain.*
 import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.candidate.CandidateService
 import org.elasticsearch.action.index.IndexRequest
@@ -14,66 +11,73 @@ import org.elasticsearch.client.RequestOptions.DEFAULT
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.common.xcontent.XContentType.JSON
-import org.elasticsearch.index.query.QueryBuilders.matchQuery
+import org.elasticsearch.index.query.MatchQueryBuilder
 import org.elasticsearch.index.query.QueryBuilders.termQuery
 import org.elasticsearch.index.query.TermQueryBuilder
 import org.elasticsearch.index.reindex.DeleteByQueryRequest
 import org.elasticsearch.index.reindex.UpdateByQueryRequest
+import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder
 import org.springframework.data.domain.PageImpl
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate
-import org.springframework.data.elasticsearch.core.SearchHit
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder
 import org.springframework.stereotype.Service
 import java.util.*
+
 
 private val gson = Gson()
 
 @Service
-class ElasticCandidateService(
-    private val elasticsearchRestTemplate: ElasticsearchRestTemplate,
-    private val elasticsearchHighLevelClient: RestHighLevelClient
-) : CandidateService {
+class ElasticCandidateService(private val client: RestHighLevelClient) : CandidateService {
 
     override fun searchForCandidates(requestModel: RequestModel): ResponseModel<Candidate> {
-        val (term, pageable) = requestModel
-        val query = matchQuery("cv.content", term)
+        val (term, pageable, company) = requestModel
+
+        val query = MatchQueryBuilder("cv.content", term)
             .fuzziness(Fuzziness.AUTO)
 
-        val searchQuery = NativeSearchQueryBuilder()
-            .withQuery(query)
-            .withPageable(pageable)
-            .withTrackScores(true)
-            .withHighlightFields(HighlightBuilder.Field("cv.content"))
-            .build()
+        val highlighter =
+            HighlightBuilder().field(HighlightBuilder.Field("cv.content"))
 
-        val searchResult = elasticsearchRestTemplate.search(searchQuery, EsCandidate::class.java)
+        val source = SearchSourceBuilder()
+            .query(query)
+            .from(pageable.offset.toInt())
+            .size(pageable.pageSize)
+            .trackScores(true)
+            .highlighter(highlighter)
 
-        val items = searchResult.searchHits.map { it.toItem() }
+        val searchRequest = SearchRequest()
+            .indices(company)
+            .source(source)
 
-        val pageImpl = PageImpl(items, pageable, searchResult.totalHits)
+        val searchResult = client.search(searchRequest, DEFAULT)
+
+
+        val totalItems = searchResult.hits.totalHits?.value ?: 0
+
+        val items = searchResult.toCandidatesAsItems()
+
+        val pageImpl = PageImpl(items, pageable, totalItems)
 
         return ResponseModel(
             scope = "candidates",
-            items = items,
-            pagination = pageImpl.toPagination(searchResult.totalHits.toInt())
+            items = searchResult.toCandidatesAsItems(),
+            pagination = pageImpl.toPagination(totalItems.toInt())
         )
     }
 
     override fun findCandidateByCode(candidateCode: CandidateCode, index: String): Candidate? {
         val sourceBuilder = SearchSourceBuilder().query(termQuery("candidateCode", candidateCode))
         val searchRequest = SearchRequest().indices(index).source(sourceBuilder)
-        return elasticsearchHighLevelClient
-                .search(searchRequest, DEFAULT)
-                .toCandidate()
+        return client
+            .search(searchRequest, DEFAULT)
+            .toCandidate()
     }
 
     override fun saveCandidate(candidate: Candidate, index: String): Candidate {
         val request = IndexRequest(index)
             .id(UUID.randomUUID().toString())
             .source(gson.toJson(candidate), JSON)
-        elasticsearchHighLevelClient.index(request, DEFAULT)
+        client.index(request, DEFAULT)
         return candidate
 
     }
@@ -81,14 +85,14 @@ class ElasticCandidateService(
     override fun updateCandidate(candidate: Candidate, index: String): Candidate {
         val request = UpdateByQueryRequest(index)
             .setQuery(TermQueryBuilder("candidateCode", candidate.candidateCode))
-        elasticsearchHighLevelClient.updateByQuery(request, DEFAULT)
+        client.updateByQuery(request, DEFAULT)
         return candidate
     }
 
     override fun deleteCandidate(candidateCode: CandidateCode, index: String) {
         val request = DeleteByQueryRequest(index)
             .setQuery(TermQueryBuilder("candidateCode", candidateCode))
-        elasticsearchHighLevelClient.deleteByQuery(request, DEFAULT)
+        client.deleteByQuery(request, DEFAULT)
     }
 
 }
@@ -96,20 +100,18 @@ class ElasticCandidateService(
 fun SearchResponse.toCandidate(): Candidate? =
     hits.hits.firstOrNull()?.sourceAsString.let { gson.fromJson(it, Candidate::class.java) }
 
+fun SearchHit.toCandidateAsItem(): Item<Candidate> =
+    Item(
+        item = sourceAsString.let { gson.fromJson(it, Candidate::class.java) },
+        itemMetaData = toItemMetaData()
+    )
 
-fun SearchHit<EsCandidate>.toCandidate() = Candidate(
-    firstName = content.firstName,
-    company = content.company,
-    lastName = content.lastName,
-    cvList = content.cvList,
-    emails = content.emails,
-    candidateCode = content.candidateCode,
-    phoneNumbers = content.phoneNumbers,
-    socialNetworks = content.socialNetworks,
-    tags = content.tags,
-    country = content.country,
-    otherAttachments = content.otherAttachments
+fun SearchResponse.toCandidatesAsItems(): List<Item<Candidate>> =
+    hits.hits.map { it.toCandidateAsItem() }
+
+fun SearchHit.toItemMetaData() = ItemMetaData(
+    score = score.toBigDecimal(),
+    highlight = highlightFields.values.map { it.fragments.toString()}.toList()
 )
 
-fun SearchHit<EsCandidate>.toItem() = Item(item = toCandidate(), itemMetaData = toItemMetaData())
 

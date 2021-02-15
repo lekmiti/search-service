@@ -19,9 +19,10 @@ class SearchResource(private val searchUseCases: SearchUseCases) {
     @GetMapping
     fun search(
         @RequestParam("term") term: String,
-        @RequestParam("type", required = false) type: String?,
-        pageable: Pageable) =
-        searchUseCases.searchForCandidates(RequestModel(term, pageable)).let {
+        @RequestParam("scope", required = false) scope: String?,
+        pageable: Pageable
+    ) =
+        searchUseCases.searchForCandidates(RequestModel(term, pageable, scope, "zsoft-consulting")).let {
             if (it.items.isEmpty()) response.notFound("No items referenced by term: $term")
             else response.ok(it, "Items referenced by term '$term': ${it.items}")
         }

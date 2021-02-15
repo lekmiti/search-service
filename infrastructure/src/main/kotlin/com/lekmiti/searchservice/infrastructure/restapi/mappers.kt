@@ -1,10 +1,8 @@
 package com.lekmiti.searchservice.infrastructure.search
 
-import com.lekmiti.searchservice.domain.ItemMetaData
 import com.lekmiti.searchservice.domain.Links
 import com.lekmiti.searchservice.domain.Pagination
 import org.springframework.data.domain.PageImpl
-import org.springframework.data.elasticsearch.core.SearchHit
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 
@@ -27,10 +25,7 @@ fun <T> PageImpl<T>.toPagination(totalItems: Int) = Pagination(
     )
 )
 
-fun <T> SearchHit<T>.toItemMetaData() = ItemMetaData(
-    score = score.toBigDecimal(),
-    highlight = highlightFields.values.flatten().toList()
-)
+
 
 fun constructPageUri(page: Int): String {
     return ServletUriComponentsBuilder.fromCurrentRequest()
