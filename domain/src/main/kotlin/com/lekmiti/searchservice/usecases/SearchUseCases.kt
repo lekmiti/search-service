@@ -1,10 +1,16 @@
 package com.lekmiti.searchservice.usecases
 
-import com.lekmiti.searchservice.domain.candidate.CandidateService
-import com.lekmiti.searchservice.domain.RequestModel
+import com.lekmiti.searchservice.domain.SearchRequestModel
+import com.lekmiti.searchservice.domain.search.SearchScope
+import com.lekmiti.searchservice.domain.search.SearchService
 
-class SearchUseCases(private val candidateService: CandidateService) {
+class SearchUseCases(
+    private val searchService: SearchService,
+    private val scope: SearchScope) {
 
-    fun searchForCandidates(requestModel: RequestModel) =
-        candidateService.searchForCandidates(requestModel)
+    fun search(searchRequestModel: SearchRequestModel) =
+        searchService.searchForCandidates(
+            searchRequestModel,
+            scope.getSearchScopesForCandidates(searchRequestModel.scopes))
+
 }

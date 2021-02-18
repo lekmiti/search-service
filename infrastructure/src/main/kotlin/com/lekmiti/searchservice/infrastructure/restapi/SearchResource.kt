@@ -1,7 +1,7 @@
 package com.lekmiti.searchservice.infrastructure.restapi
 
+import com.lekmiti.searchservice.domain.SearchRequestModel
 import com.lekmiti.searchservice.usecases.SearchUseCases
-import com.lekmiti.searchservice.domain.RequestModel
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,11 +19,12 @@ class SearchResource(private val searchUseCases: SearchUseCases) {
     @GetMapping
     fun search(
         @RequestParam("term") term: String,
-        @RequestParam("scope", required = false) scope: String?,
+        @RequestParam("type", required = false) type: String?,
+        @RequestParam("scopes", required = false) scopes: Collection<String>,
         pageable: Pageable
     ) =
-        searchUseCases.searchForCandidates(RequestModel(term, pageable, scope, "zsoft-consulting")).let {
-            if (it.items.isEmpty()) response.notFound("No items referenced by term: $term")
+        searchUseCases.search(SearchRequestModel(term, pageable, type, "zsoft-consulting", scopes) ).let {
+            if (it.items.isEmpty()) response.notFound("No items referenced by term: '$term' found")
             else response.ok(it, "Items referenced by term '$term': ${it.items}")
         }
 

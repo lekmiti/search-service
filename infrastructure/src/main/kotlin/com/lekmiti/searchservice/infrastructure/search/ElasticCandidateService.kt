@@ -1,7 +1,9 @@
 package com.lekmiti.searchservice.infrastructure.search
 
 import com.google.gson.Gson
-import com.lekmiti.searchservice.domain.*
+import com.lekmiti.searchservice.domain.CandidateCode
+import com.lekmiti.searchservice.domain.Item
+import com.lekmiti.searchservice.domain.ItemMetaData
 import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.candidate.CandidateService
 import org.elasticsearch.action.index.IndexRequest
@@ -9,17 +11,13 @@ import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.client.RequestOptions.DEFAULT
 import org.elasticsearch.client.RestHighLevelClient
-import org.elasticsearch.common.unit.Fuzziness
 import org.elasticsearch.common.xcontent.XContentType.JSON
-import org.elasticsearch.index.query.MatchQueryBuilder
 import org.elasticsearch.index.query.QueryBuilders.termQuery
 import org.elasticsearch.index.query.TermQueryBuilder
 import org.elasticsearch.index.reindex.DeleteByQueryRequest
 import org.elasticsearch.index.reindex.UpdateByQueryRequest
 import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.builder.SearchSourceBuilder
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder
-import org.springframework.data.domain.PageImpl
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -29,41 +27,6 @@ private val gson = Gson()
 @Service
 class ElasticCandidateService(private val client: RestHighLevelClient) : CandidateService {
 
-    override fun searchForCandidates(requestModel: RequestModel): ResponseModel<Candidate> {
-        val (term, pageable, company) = requestModel
-
-        val query = MatchQueryBuilder("cv.content", term)
-            .fuzziness(Fuzziness.AUTO)
-
-        val highlighter =
-            HighlightBuilder().field(HighlightBuilder.Field("cv.content"))
-
-        val source = SearchSourceBuilder()
-            .query(query)
-            .from(pageable.offset.toInt())
-            .size(pageable.pageSize)
-            .trackScores(true)
-            .highlighter(highlighter)
-
-        val searchRequest = SearchRequest()
-            .indices(company)
-            .source(source)
-
-        val searchResult = client.search(searchRequest, DEFAULT)
-
-
-        val totalItems = searchResult.hits.totalHits?.value ?: 0
-
-        val items = searchResult.toCandidatesAsItems()
-
-        val pageImpl = PageImpl(items, pageable, totalItems)
-
-        return ResponseModel(
-            scope = "candidates",
-            items = searchResult.toCandidatesAsItems(),
-            pagination = pageImpl.toPagination(totalItems.toInt())
-        )
-    }
 
     override fun findCandidateByCode(candidateCode: CandidateCode, index: String): Candidate? {
         val sourceBuilder = SearchSourceBuilder().query(termQuery("candidateCode", candidateCode))
@@ -94,7 +57,6 @@ class ElasticCandidateService(private val client: RestHighLevelClient) : Candida
             .setQuery(TermQueryBuilder("candidateCode", candidateCode))
         client.deleteByQuery(request, DEFAULT)
     }
-
 }
 
 fun SearchResponse.toCandidate(): Candidate? =
@@ -111,7 +73,7 @@ fun SearchResponse.toCandidatesAsItems(): List<Item<Candidate>> =
 
 fun SearchHit.toItemMetaData() = ItemMetaData(
     score = score.toBigDecimal(),
-    highlight = highlightFields.values.map { it.fragments.toString()}.toList()
+    highlight = highlightFields.values.map { it.fragments.toString() }.toList()
 )
 
 

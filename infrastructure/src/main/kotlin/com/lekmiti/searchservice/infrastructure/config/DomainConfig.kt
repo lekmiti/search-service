@@ -1,8 +1,10 @@
 package com.lekmiti.searchservice.infrastructure.config
 
+import com.lekmiti.searchservice.domain.candidate.CandidateService
+import com.lekmiti.searchservice.domain.search.SearchScope
+import com.lekmiti.searchservice.domain.search.SearchService
 import com.lekmiti.searchservice.usecases.CandidateUseCases
 import com.lekmiti.searchservice.usecases.SearchUseCases
-import com.lekmiti.searchservice.domain.candidate.CandidateService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -10,10 +12,15 @@ import org.springframework.context.annotation.Configuration
 class DomainConfig {
 
     @Bean
-    fun searchAppService(candidateService: CandidateService) = SearchUseCases(candidateService)
+    fun searchScope() = SearchScope()
 
     @Bean
-    fun candidateAppService(candidateService: CandidateService) = CandidateUseCases(candidateService)
+    fun searchAppService(searchService: SearchService, searchScope: SearchScope) =
+        SearchUseCases(searchService, searchScope)
+
+    @Bean
+    fun candidateAppService(candidateService: CandidateService) =
+        CandidateUseCases(candidateService)
 
 
 }

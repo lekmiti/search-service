@@ -18,7 +18,6 @@ data class Item<out T>(
         val item: T,
         val itemMetaData: ItemMetaData) where T : AnItem
 
-
 data class Pagination(
         val size: Int,
         val page: Int,
@@ -29,8 +28,7 @@ data class Pagination(
         val isLast: Boolean,
         val isFirst: Boolean,
         val sort: Sort,
-        val links: Links
-)
+        val links: Links)
 
 data class Links(
         val next: String?,
