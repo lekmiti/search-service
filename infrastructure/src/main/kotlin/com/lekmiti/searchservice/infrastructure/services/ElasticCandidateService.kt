@@ -2,8 +2,8 @@ package com.lekmiti.searchservice.infrastructure.services
 
 import com.google.gson.Gson
 import com.lekmiti.searchservice.domain.CandidateCode
-import com.lekmiti.searchservice.domain.Item
-import com.lekmiti.searchservice.domain.ItemMetaData
+import com.lekmiti.searchservice.domain.search.Item
+import com.lekmiti.searchservice.domain.search.ItemMetaData
 import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.candidate.CandidateService
 import com.lekmiti.searchservice.infrastructure.restapi.SearchResource

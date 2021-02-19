@@ -1,6 +1,6 @@
 package com.lekmiti.searchservice.usecases
 
-import com.lekmiti.searchservice.domain.SearchRequestModel
+import com.lekmiti.searchservice.domain.search.SearchRequestModel
 import com.lekmiti.searchservice.domain.search.SearchScope
 import com.lekmiti.searchservice.domain.search.SearchService
 

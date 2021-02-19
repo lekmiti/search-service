@@ -1,4 +1,4 @@
-package com.lekmiti.searchservice.domain
+package com.lekmiti.searchservice.domain.search
 
 import org.springframework.data.domain.Sort
 import java.math.BigDecimal
@@ -16,7 +16,8 @@ interface AnItem
 
 data class Item<out T>(
         val item: T,
-        val itemMetaData: ItemMetaData) where T : AnItem
+        val itemMetaData: ItemMetaData
+) where T : AnItem
 
 data class Pagination(
         val size: Int,
@@ -28,7 +29,8 @@ data class Pagination(
         val isLast: Boolean,
         val isFirst: Boolean,
         val sort: Sort,
-        val links: Links)
+        val links: Links
+)
 
 data class Links(
         val next: String?,

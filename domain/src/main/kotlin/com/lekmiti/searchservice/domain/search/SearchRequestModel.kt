@@ -1,5 +1,6 @@
-package com.lekmiti.searchservice.domain
+package com.lekmiti.searchservice.domain.search
 
+import com.lekmiti.searchservice.domain.Term
 import org.springframework.data.domain.Pageable
 
 

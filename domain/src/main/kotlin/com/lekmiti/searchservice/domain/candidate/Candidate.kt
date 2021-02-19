@@ -1,6 +1,7 @@
 package com.lekmiti.searchservice.domain.candidate
 
 import com.lekmiti.searchservice.domain.*
+import com.lekmiti.searchservice.domain.search.AnItem
 
 open class Candidate(
     val candidateCode: CandidateCode,

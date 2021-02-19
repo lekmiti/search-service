@@ -1,7 +1,7 @@
 package com.lekmiti.searchservice.infrastructure.services
 
-import com.lekmiti.searchservice.domain.ResponseModel
-import com.lekmiti.searchservice.domain.SearchRequestModel
+import com.lekmiti.searchservice.domain.search.ResponseModel
+import com.lekmiti.searchservice.domain.search.SearchRequestModel
 import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.search.SearchService
 import org.elasticsearch.action.search.SearchRequest

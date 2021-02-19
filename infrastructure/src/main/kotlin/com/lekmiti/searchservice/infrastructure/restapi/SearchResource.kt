@@ -1,6 +1,6 @@
 package com.lekmiti.searchservice.infrastructure.restapi
 
-import com.lekmiti.searchservice.domain.SearchRequestModel
+import com.lekmiti.searchservice.domain.search.SearchRequestModel
 import com.lekmiti.searchservice.usecases.SearchUseCases
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable

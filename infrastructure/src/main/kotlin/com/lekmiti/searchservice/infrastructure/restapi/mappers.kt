@@ -1,7 +1,7 @@
 package com.lekmiti.searchservice.infrastructure.services
 
-import com.lekmiti.searchservice.domain.Links
-import com.lekmiti.searchservice.domain.Pagination
+import com.lekmiti.searchservice.domain.search.Links
+import com.lekmiti.searchservice.domain.search.Pagination
 import org.springframework.data.domain.PageImpl
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
