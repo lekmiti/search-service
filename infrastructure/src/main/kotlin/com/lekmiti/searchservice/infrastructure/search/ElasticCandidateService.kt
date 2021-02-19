@@ -6,6 +6,7 @@ import com.lekmiti.searchservice.domain.Item
 import com.lekmiti.searchservice.domain.ItemMetaData
 import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.candidate.CandidateService
+import com.lekmiti.searchservice.infrastructure.restapi.SearchResource
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
@@ -18,11 +19,14 @@ import org.elasticsearch.index.reindex.DeleteByQueryRequest
 import org.elasticsearch.index.reindex.UpdateByQueryRequest
 import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*
 
 
 private val gson = Gson()
+
+private val log = LoggerFactory.getLogger(SearchResource::class.java)
 
 @Service
 class ElasticCandidateService(private val client: RestHighLevelClient) : CandidateService {

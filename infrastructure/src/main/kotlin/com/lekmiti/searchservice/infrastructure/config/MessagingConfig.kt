@@ -20,5 +20,8 @@ interface ExternalBindings {
     @Input("candidate-data-deleted")
     fun candidateDataDeletedChannel(): SubscribableChannel
 
+    @Input("company-as-client-init")
+    fun companyAsClientInitChannel(): SubscribableChannel
+
 
 }

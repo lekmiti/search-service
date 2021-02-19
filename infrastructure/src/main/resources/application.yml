@@ -15,6 +15,9 @@ spring:
         candidate-data-deleted:
           destination: live.hiring-master
           group: search-service-candidate-data-deleted
+        company-as-client-init:
+          destination: live.hiring-master
+          group: search-service-candidate-company-as-client-init
       rabbit:
         bindings:
           candidate-created:
@@ -28,6 +31,10 @@ spring:
           candidate-data-deleted:
             consumer:
               bindingRoutingKey: candidate-data-deleted
+              autoBindDlq: true
+          company-as-client-init:
+            consumer:
+              bindingRoutingKey: company-as-client-init
               autoBindDlq: true
 
   rabbitmq:
