@@ -1,4 +1,4 @@
-package com.lekmiti.searchservice.infrastructure.search
+package com.lekmiti.searchservice.infrastructure.services
 
 import com.google.gson.Gson
 import com.lekmiti.searchservice.domain.CandidateCode
