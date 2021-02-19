@@ -18,11 +18,11 @@ class DomainConfig {
 
 
     @Bean
-    fun searchAppService(searchService: SearchService, searchScope: SearchScope) =
+    fun searchUseCases(searchService: SearchService, searchScope: SearchScope) =
         SearchUseCases(searchService, searchScope)
 
     @Bean
-    fun candidateAppService(candidateService: CandidateService) =
+    fun candidateUsesCases(candidateService: CandidateService) =
         CandidateUseCases(candidateService)
 
     @Bean
