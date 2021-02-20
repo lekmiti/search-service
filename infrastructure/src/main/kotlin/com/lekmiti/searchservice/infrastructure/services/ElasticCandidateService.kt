@@ -2,10 +2,10 @@ package com.lekmiti.searchservice.infrastructure.services
 
 import com.google.gson.Gson
 import com.lekmiti.searchservice.domain.CandidateCode
-import com.lekmiti.searchservice.domain.search.Item
-import com.lekmiti.searchservice.domain.search.ItemMetaData
 import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.candidate.CandidateService
+import com.lekmiti.searchservice.domain.search.Item
+import com.lekmiti.searchservice.domain.search.ItemMetaData
 import com.lekmiti.searchservice.infrastructure.restapi.SearchResource
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
@@ -46,7 +46,6 @@ class ElasticCandidateService(private val client: RestHighLevelClient) : Candida
             .source(gson.toJson(candidate), JSON)
         client.index(request, DEFAULT)
         return candidate
-
     }
 
     override fun updateCandidate(candidate: Candidate, index: String): Candidate {

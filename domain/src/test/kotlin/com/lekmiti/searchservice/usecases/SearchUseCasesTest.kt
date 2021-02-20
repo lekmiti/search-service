@@ -1,8 +1,8 @@
 package com.lekmiti.searchservice.usecases
 
+import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.search.ResponseModel
 import com.lekmiti.searchservice.domain.search.SearchRequestModel
-import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.search.SearchScope
 import com.lekmiti.searchservice.domain.search.SearchService
 import io.mockk.every
@@ -47,10 +47,10 @@ internal class SearchUseCasesTest {
             "candidateCode" ,
             "company",
             "firstName",
-            "lastName ",
-            "country ",
-            "source ",
-            "address ",
+            "lastName",
+            "country",
+            "source",
+            "address",
             "applicationType",
             "phoneNumbers",
             "emails",
