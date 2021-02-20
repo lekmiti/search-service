@@ -18,7 +18,7 @@ internal class CandidateTest {
             address = "old address",
             emails = listOf("elhadi.lekmiti@zsoft-consulting.com"),
             tags = listOf("developer"),
-            cvList = listOf(Attachment(url = "old_url", name = "old_url")),
+            cvList = listOf(Attachment(url = "old_url", name = "old_url", content = "odl_content")),
             socialNetworks = listOf(SocialNetwork(type = "linkedin", link = "linkedin_url"))
         )
 
@@ -29,7 +29,7 @@ internal class CandidateTest {
             address = "new address",
             phoneNumbers = listOf("0753571104"),
             tags = listOf("developer", "java", "kotlin"),
-            cvList = listOf(Attachment(url = "new_url", name = "new_url"))
+            cvList = listOf(Attachment(url = "new_url", name = "new_url", content = "new_content"))
         )
 
         val expectedCandidate = Candidate(
@@ -42,7 +42,7 @@ internal class CandidateTest {
             address = "new address", // from new
             phoneNumbers = listOf("0753571104"), // from new
             tags = listOf("developer", "java", "kotlin"), // from new
-            cvList = listOf(Attachment(url = "new_url", name = "new_url")) // from new
+            cvList = listOf(Attachment(url = "new_url", name = "new_url", content = "new_content")) // from new
 
         )
 
@@ -61,7 +61,7 @@ internal class CandidateTest {
             address = "old address",
             emails = listOf("elhadi.lekmiti@zsoft-consulting.com"),
             tags = listOf("developer"),
-            cvList = listOf(Attachment(url = "old_url", name = "old_url")),
+            cvList = listOf(Attachment(url = "old_url", name = "old_url", content = "odl_content")),
             socialNetworks = listOf(SocialNetwork(type = "linkedin", link = "linkedin_url"))
         )
         assertThat(candidate.overrideBy(null)).isEqualTo(candidate)
@@ -86,7 +86,7 @@ internal class CandidateTest {
             phoneNumbers = listOf("0753571104"),
             emails = listOf("elhadi.lekmiti@zsoft-consulting.com"),
             tags = listOf("developer", "java", "kotlin"),
-            cvList = listOf(Attachment(url = "old_url", name = "old_url")),
+            cvList = listOf(Attachment(url = "old_url", name = "old_url", content = "odl_content")),
             socialNetworks = listOf(SocialNetwork(type = "linkedin", link = "linkedin_url"))
         )
 
@@ -94,7 +94,7 @@ internal class CandidateTest {
         val candidateDataToBeDeleted = CandidateDataToBeDeleted(
             tags = listOf("kotlin", "developer"),
             emails = listOf("elhadi.lekmiti@zsoft-consulting.com"),
-            cvList = listOf(Attachment(url = "old_url", name = "old_url"))
+            cvList = listOf(Attachment(url = "old_url", name = "old_url", content = "odl_content"))
         )
 
         val expectedCandidate = Candidate(

@@ -9,6 +9,7 @@ typealias CVs = Collection<Attachment>
 class Attachment(
     val url: String,
     val name: String,
+    val content: String,
     val type: String? = null,
     val tags: Tags? = emptyList()
 ) {
