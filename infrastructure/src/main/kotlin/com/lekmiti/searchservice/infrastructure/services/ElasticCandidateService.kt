@@ -33,7 +33,7 @@ class ElasticCandidateService(private val client: RestHighLevelClient) : Candida
 
 
     override fun findCandidateByCode(candidateCode: CandidateCode, index: String): Candidate? {
-        val sourceBuilder = SearchSourceBuilder().query(termQuery("candidateCode", candidateCode))
+        val sourceBuilder = SearchSourceBuilder().query(termQuery("candidateCode.keyword", candidateCode))
         val searchRequest = SearchRequest().indices(index).source(sourceBuilder)
         return client
             .search(searchRequest, DEFAULT)
@@ -50,14 +50,14 @@ class ElasticCandidateService(private val client: RestHighLevelClient) : Candida
 
     override fun updateCandidate(candidate: Candidate, index: String): Candidate {
         val request = UpdateByQueryRequest(index)
-            .setQuery(TermQueryBuilder("candidateCode", candidate.candidateCode))
+            .setQuery(TermQueryBuilder("candidateCode.keyword", candidate.candidateCode))
         client.updateByQuery(request, DEFAULT)
         return candidate
     }
 
     override fun deleteCandidate(candidateCode: CandidateCode, index: String) {
         val request = DeleteByQueryRequest(index)
-            .setQuery(TermQueryBuilder("candidateCode", candidateCode))
+            .setQuery(TermQueryBuilder("candidateCode.keyword", candidateCode))
         client.deleteByQuery(request, DEFAULT)
     }
 }
