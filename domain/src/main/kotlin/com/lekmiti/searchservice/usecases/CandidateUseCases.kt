@@ -12,8 +12,11 @@ class CandidateUseCases(private val candidateService: CandidateService) {
 
     fun createOrUpdateCandidate(candidate: Candidate) =
         candidateService.findCandidateByCode(candidate.candidateCode, candidate.company)
-            ?.let { candidateService.updateCandidate(it.overrideBy(candidate), candidate.company) }
-            ?: candidateService.saveCandidate(candidate, candidate.company)
+            ?.let {
+                candidateService.updateCandidate(it.overrideBy(candidate), candidate.company)
+                    .also { uc -> log.info("candidate ${uc.candidateCode} has been updated: $uc") } }
+            ?:  candidateService.saveCandidate(candidate, candidate.company)
+                    .also { log.info("new candidate has been indexed: $it") }
 
     fun deleteCandidateData(candidate: CandidateDelete) =
         candidateService.findCandidateByCode(candidate.candidateCode, candidate.company)
