@@ -14,8 +14,8 @@ open class Candidate(
     val tags: Tags = emptyList(),
     val country: String? = null,
     val address: String? = null,
-    val applicationType: String? = null, // how the candidate has been found : application, sourcing, referral
-    val source: String? = null,  // linkedin, sofiane , monster
+    val applicationType: String? = null,
+    val source: String? = null,
     val otherAttachments: Attachments = emptyList(),
     open val cvList: CVs = emptyList()
 ) : AnItem {

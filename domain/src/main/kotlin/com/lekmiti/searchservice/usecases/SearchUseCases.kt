@@ -10,7 +10,7 @@ class SearchUseCases(
 
     fun search(searchRequestModel: SearchRequestModel) =
         searchService.searchForCandidates(
-            searchRequestModel,
+            searchRequestModel.lowerCaseClient(),
             scope.getSearchScopesForCandidates(searchRequestModel.scopes))
 
 }

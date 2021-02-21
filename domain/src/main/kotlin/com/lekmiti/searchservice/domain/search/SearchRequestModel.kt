@@ -10,4 +10,6 @@ data class SearchRequestModel(
     val type: String?,
     val client: String,
     val scopes: Collection<String> = emptyList()
-)
+) {
+    fun lowerCaseClient() = this.copy(client = client.toLowerCase())
+}
