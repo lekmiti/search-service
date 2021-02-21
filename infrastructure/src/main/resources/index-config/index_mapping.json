@@ -44,6 +44,10 @@
       "type": "nested",
       "include_in_parent": true
     },
+    "socialNetworks": {
+      "type": "nested",
+      "include_in_parent": true
+    },
     "emails": {
       "type": "text",
       "fields": {
@@ -77,28 +81,6 @@
         "keyword": {
           "type": "keyword",
           "ignore_above": 256
-        }
-      }
-    },
-    "socialNetworks": {
-      "properties": {
-        "link": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
-        },
-        "type": {
-          "type": "text",
-          "fields": {
-            "keyword": {
-              "type": "keyword",
-              "ignore_above": 256
-            }
-          }
         }
       }
     },

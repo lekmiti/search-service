@@ -7,32 +7,32 @@ class SearchScope {
         if (scopes.isEmpty()) getCandidateSearchableFields
         else scopes.toList()
 
+    private val getCandidateSearchableFields = listOf(
+        "candidateCode",
+        "company",
+        "firstName",
+        "lastName",
+        "country",
+        "source",
+        "address",
+        "applicationType",
+        "phoneNumbers",
+        "emails",
+        "tags",
+        "cvList.content",
+        "cvList.name",
+        "cvList.type",
+        "cvList.tags",
+        "otherAttachments.content",
+        "otherAttachments.name",
+        "otherAttachments.type",
+        "otherAttachments.tags",
+        "socialNetworks.link",
+        "socialNetworks.type"
+    )
+
 }
 
-//todo: refactor this using a more dynamic pattern
-private val getCandidateSearchableFields = listOf(
-    "candidateCode",
-    "company",
-    "firstName",
-    "lastName",
-    "country",
-    "source",
-    "address",
-    "applicationType",
-    "phoneNumbers",
-    "emails",
-    "tags",
-    "cvList.content",
-    "cvList.name",
-    "cvList.type",
-    "cvList.tags",
-    "otherAttachments.content",
-    "otherAttachments.name",
-    "otherAttachments.type",
-    "otherAttachments.tags",
-    "socialNetworks.link",
-    "socialNetworks.type"
-)
 
 
 

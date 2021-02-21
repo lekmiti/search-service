@@ -16,8 +16,8 @@ class ElasticCompanyAsClientService(
     private val client: RestHighLevelClient) : CompanyAsClientService {
     override fun initializeNewCompanyAsClient(company: String): Boolean {
         val indexExists = client.indices().exists(GetIndexRequest(company), RequestOptions.DEFAULT)
-        return if (!indexExists) createNewIndex(company)
-        else false
+        return  if (!indexExists) createNewIndex(company)
+                else false
     }
 
     private fun createNewIndex(company: String): Boolean {
