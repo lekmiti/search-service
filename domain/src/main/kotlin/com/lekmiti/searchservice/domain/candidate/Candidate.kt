@@ -3,7 +3,7 @@ package com.lekmiti.searchservice.domain.candidate
 import com.lekmiti.searchservice.domain.*
 import com.lekmiti.searchservice.domain.search.AnItem
 
-open class Candidate(
+data class Candidate(
     val candidateCode: CandidateCode,
     val company: Company,
     val firstName: String? = null,
@@ -17,7 +17,7 @@ open class Candidate(
     val applicationType: String? = null,
     val source: String? = null,
     val otherAttachments: Attachments = emptyList(),
-    open val cvList: CVs = emptyList()
+    val cvList: CVs = emptyList()
 ) : AnItem {
 
     fun overrideBy(other: Candidate?) =
@@ -58,47 +58,6 @@ open class Candidate(
             otherAttachments = otherAttachments - candidateDataToBeDeleted.otherAttachments,
             socialNetworks = socialNetworks - candidateDataToBeDeleted.socialNetworks
         )
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Candidate) return false
-
-        if (candidateCode != other.candidateCode) return false
-        if (company != other.company) return false
-        if (firstName != other.firstName) return false
-        if (lastName != other.lastName) return false
-        if (emails != other.emails) return false
-        if (phoneNumbers != other.phoneNumbers) return false
-        if (socialNetworks != other.socialNetworks) return false
-        if (tags != other.tags) return false
-        if (country != other.country) return false
-        if (address != other.address) return false
-        if (applicationType != other.applicationType) return false
-        if (source != other.source) return false
-        if (otherAttachments != other.otherAttachments) return false
-        if (cvList != other.cvList) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = candidateCode.hashCode()
-        result = 31 * result + company.hashCode()
-        result = 31 * result + (firstName?.hashCode() ?: 0)
-        result = 31 * result + (lastName?.hashCode() ?: 0)
-        result = 31 * result + emails.hashCode()
-        result = 31 * result + phoneNumbers.hashCode()
-        result = 31 * result + socialNetworks.hashCode()
-        result = 31 * result + tags.hashCode()
-        result = 31 * result + (country?.hashCode() ?: 0)
-        result = 31 * result + (address?.hashCode() ?: 0)
-        result = 31 * result + (applicationType?.hashCode() ?: 0)
-        result = 31 * result + (source?.hashCode() ?: 0)
-        result = 31 * result + otherAttachments.hashCode()
-        result = 31 * result + cvList.hashCode()
-        return result
-    }
-
 
 }
 
