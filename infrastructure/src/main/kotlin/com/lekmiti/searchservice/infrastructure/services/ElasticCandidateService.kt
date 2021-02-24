@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.lekmiti.searchservice.domain.CandidateCode
 import com.lekmiti.searchservice.domain.candidate.Candidate
 import com.lekmiti.searchservice.domain.candidate.CandidateService
+import com.lekmiti.searchservice.domain.search.Highlight
 import com.lekmiti.searchservice.domain.search.Item
 import com.lekmiti.searchservice.domain.search.ItemMetaData
 import org.elasticsearch.action.index.IndexRequest
@@ -24,7 +25,6 @@ import kotlin.reflect.full.memberProperties
 
 
 private val gson = Gson()
-
 
 @Service
 class ElasticCandidateService(private val client: RestHighLevelClient) : CandidateService {
@@ -82,7 +82,11 @@ fun SearchResponse.toCandidatesAsItems(): List<Item<Candidate>> =
 
 fun SearchHit.toItemMetaData() = ItemMetaData(
     score = score.toBigDecimal(),
-    highlight = highlightFields.values.map { it.fragments.toString() }.toList()
+    highlights = highlightFields.map {
+            Highlight(
+                it.key,
+                it.value.fragments.map { text -> text.toString() }
+            )}
 )
 
 inline fun <reified T : Any> T.asMap() : Map<String, Any?> {

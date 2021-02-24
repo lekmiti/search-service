@@ -22,12 +22,12 @@ class ElasticSearchService(private val client: RestHighLevelClient) : SearchServ
         scopes: Collection<String>
     ): ResponseModel<Candidate> {
 
-        val query = QueryBuilders.multiMatchQuery(searchRequestModel.term, *scopes.toTypedArray())
-            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+        val query = QueryBuilders
+            .multiMatchQuery(searchRequestModel.term, * scopes.toTypedArray())
             .fuzziness(Fuzziness.AUTO)
 
-        val highlighter = HighlightBuilder(null, query, scopes.map { HighlightBuilder.Field(it) })
-
+        val highlighter = HighlightBuilder()
+        scopes.forEach {highlighter.field(HighlightBuilder.Field(it)) }
 
         val source = SearchSourceBuilder()
             .query(query)
