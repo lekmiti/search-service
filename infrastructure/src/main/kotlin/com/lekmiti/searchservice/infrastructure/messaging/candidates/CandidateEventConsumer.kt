@@ -31,7 +31,7 @@ class CandidateEventConsumer(private val candidateUseCases: CandidateUseCases) {
     fun onCandidateDataDeleted(@Payload candidateDataDeletedEvent: Event<CandidatePayload>) {
         log.info("candidate-data-deleted event received $candidateDataDeletedEvent")
         val candidateDelete =
-            candidateDataDeletedEvent.payload.toCandidateDelete(candidateDataDeletedEvent.metaData.eventType)
+            candidateDataDeletedEvent.payload.toCandidateDelete(candidateDataDeletedEvent.metaDataEvent.eventType)
         candidateUseCases.deleteCandidateData(candidateDelete)
     }
 }

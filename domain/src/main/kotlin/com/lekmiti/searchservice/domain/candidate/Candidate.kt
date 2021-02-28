@@ -67,7 +67,7 @@ data class SocialNetwork(val type: String, val link: String)
 data class CandidateDelete(
     val candidateCode: CandidateCode,
     val company: Company,
-    val deletionPolicy: String,
+    val deletionPolicy: String?,
     val candidateDataToBeDeleted: CandidateDataToBeDeleted = CandidateDataToBeDeleted()
 )
 

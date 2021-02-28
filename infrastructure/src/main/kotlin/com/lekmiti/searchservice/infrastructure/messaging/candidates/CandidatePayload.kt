@@ -4,36 +4,35 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.lekmiti.searchservice.domain.*
 import com.lekmiti.searchservice.domain.candidate.*
 
-
 data class CandidatePayload(
     @JsonProperty("candidateCode")
     val candidateCode: CandidateCode,
     @JsonProperty("company")
     val company: Company,
     @JsonProperty("firstName")
-    val firstName: String?,
+    val firstName: String? = null,
     @JsonProperty("lastName")
-    val lastName: String?,
+    val lastName: String? = null,
     @JsonProperty("emails")
-    val emails: Emails?,
+    val emails: Emails? = emptyList(),
     @JsonProperty("phoneNumbers")
-    val phoneNumbers: Collection<String>?,
+    val phoneNumbers: Collection<String>? = emptyList(),
     @JsonProperty("socialNetworks")
-    val socialNetworks: SocialNetworks?,
+    val socialNetworks: SocialNetworks? = emptyList(),
     @JsonProperty("tags")
-    val tags: Tags?,
+    val tags: Tags? = emptyList(),
     @JsonProperty("country")
-    val country: String?,
+    val country: String? = null,
     @JsonProperty("address")
-    val address: String?,
+    val address: String? = null,
     @JsonProperty("applicationType")
-    val applicationType: String?,
+    val applicationType: String? = null,
     @JsonProperty("source")
-    val source: String?,
+    val source: String? = null,
     @JsonProperty("otherAttachments")
-    val otherAttachments: Attachments?,
+    val otherAttachments: Attachments? = emptyList(),
     @JsonProperty("cvList")
-    val cvList: CVs?
+    val cvList: CVs? = emptyList()
 ) {
     fun toCandidateUpsert() =
         Candidate(
@@ -53,7 +52,7 @@ data class CandidatePayload(
             cvList = cvList.orEmpty()
         )
 
-    fun toCandidateDelete(deletionPolicy: String) =
+    fun toCandidateDelete(deletionPolicy: String?) =
         CandidateDelete(
             candidateCode = candidateCode,
             company = company,
