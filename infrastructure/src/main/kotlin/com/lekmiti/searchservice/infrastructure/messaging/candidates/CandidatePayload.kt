@@ -62,7 +62,8 @@ data class CandidatePayload(
                 phoneNumbers = phoneNumbers.orEmpty(),
                 tags = tags.orEmpty(),
                 socialNetworks = socialNetworks.orEmpty(),
-                otherAttachments = otherAttachments.orEmpty()
+                otherAttachments = otherAttachments.orEmpty(),
+                cvList = cvList.orEmpty()
             )
 
         )
