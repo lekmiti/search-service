@@ -11,7 +11,7 @@ data class ResponseModel<out T>(
     val pagination: Pagination? = null
 ) where T : AnItem
 
-data class ItemMetaData(val score: BigDecimal, val highlights:  Collection<Highlight>)
+data class ItemMetaData(val score: BigDecimal, val highlights:  Collection<Highlight>? = emptyList())
 
 data class Highlight(val field: String, val values: Collection<String>)
 
